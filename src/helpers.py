@@ -75,8 +75,6 @@ def generate_from_all_pages(llm_func, ocr_path: str, output_path: str):
     all_rows = []
     # Go through all pages and process
     for page_num, page_text in pages.items():
-        if page_num == 10:
-            break
         try:
             rows = llm_func(page_text)
             for row in rows:
