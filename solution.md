@@ -46,3 +46,8 @@ Finally, I'll write a function that reads the ocr document, splits it, and then
 iteratively provides each page to gemini. It will then take all of that output
 and write it to a .jsonl file. Since we already have the pages, I plan to add
 the page number to each row of the dataset. Might help with SFT.
+
+I encountered resource limits while working with the Gemini API and was able to
+limit the input to only 10 pages to get around it for now. I expect this to not
+cause any issues later but will consume some credits to confirm when
+everything's done. For now, I'll move onto local inference.
