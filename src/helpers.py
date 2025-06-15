@@ -47,6 +47,7 @@ def extract_json_objects(raw_output: str):
             objs = json.loads(raw_output)
             return [obj for obj in objs if isinstance(obj, dict) and "query" in obj]
         else:
+            # Used AI for this regex
             matches = re.findall(r'{\s*"query":\s*".+?",\s*"tools":\s*\[.*?\]\s*}', raw_output, re.DOTALL)
             return [json.loads(m) for m in matches]
     except Exception as e:

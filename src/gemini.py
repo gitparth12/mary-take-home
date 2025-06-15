@@ -13,4 +13,6 @@ class Gemini:
 
     def generate(self, prompt: str):
         response = self.chat.send_message(prompt)
-        return extract_json_objects(response)
+        if not response.text:
+            return []
+        return extract_json_objects(response.text)
