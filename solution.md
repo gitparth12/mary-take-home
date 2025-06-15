@@ -1,11 +1,12 @@
 # Synthetic Data Generation for LLM Training
 
-## 🧠 Approach
+## Approach
 
 In order to more organically make my thinking available, I decided to maintain
 a development log throughout the process. I have used that as a basis for this
 document. The log is provided as the last segment in this document as well, if
-it's needed.
+it's needed. Additionally, I'd like to acknowledge that I took help of AI to
+format some parts of this document.
 
 The goal was to generate synthetic training data to teach an LLM to identify
 which tools to invoke (e.g., full-text or vector search) when responding to
