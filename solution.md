@@ -1,0 +1,29 @@
+## Dev Log
+
+### Initial Plan
+
+Given 400 something pages, simplify approach to one entry per page
+
+1. For each page, look for full text or vector search keywords
+2. Choose one of the found ones (or skip current page if none found)
+3. Use one of the templates to insert text based on the keyword found
+4. Might have to look into some traditional NLP to accomplish this
+
+### Second Plan
+
+After doing some research, it became clear that plain manipulation of text with
+traditional NLP would not be possible in the given time frame, possibly because
+of my lack of experience in this area.
+
+Through the handful of research papers I glossed over, using an LLM for
+synthetic dataset generation seemed like a surprisingly common method and
+having worked with LLMs before, I believe this will work better than the last
+strategy could.
+
+I plan to implement both local and api-based models, probably one each. The
+most crucial part of this approach is probably handling the prompt, and
+ensuring accurate data. The first one is pretty straightforward, I just have to
+be careful with how I structure the prompt. For the second, I want to give the
+LLM the option to not generate data if it didn't find it (assuming I give small
+chunks of the corpora), and also ask it to validate the accuracy of what it
+generated post-hoc. The second one might be out of scope if I run out of time.
