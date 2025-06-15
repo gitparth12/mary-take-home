@@ -1,5 +1,6 @@
 # lsp: disable
 from transformers import AutoModelForCausalLM, AutoTokenizer, TextStreamer
+from helpers import extract_json_objects
 import torch
 import os
 import json
@@ -20,6 +21,30 @@ class Mistral:
         self.chat_history = [
             {"role": "system", "content": prompt}
         ]
+
+
+    def generate(self, prompt: str, max_tokens: int = 1024, temperature: float = 0.7) -> list[dict]:
+        # Append the new document section
+        self.chat_history.append({"role": "user", "content": prompt})
+
+        prompt = self.build_chat_prompt()
+
+        inputs = self.tokenizer(prompt, return_tensors="pt").to(self.model.device)
+        with torch.no_grad():
+            outputs = self.model.generate(
+                **inputs,
+                max_new_tokens=max_tokens,
+                temperature=temperature,
+                do_sample=True,
+                pad_token_id=self.tokenizer.eos_token_id
+            )
+        output_text = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+        # Extract only the newly generated part
+        new_text = output_text[len(prompt):].strip()
+
+        return extract_json_objects(new_text)
+
 
     def build_chat_prompt(self) -> str:
         prompt = ""
