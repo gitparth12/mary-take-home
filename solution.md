@@ -51,3 +51,8 @@ I encountered resource limits while working with the Gemini API and was able to
 limit the input to only 10 pages to get around it for now. I expect this to not
 cause any issues later but will consume some credits to confirm when
 everything's done. For now, I'll move onto local inference.
+
+Through a quick google search, I decided to use Mistral 7B v0.3 model to make
+another class similar to the one with Gemini. Since I'll be using huggingface
+for this, it should be easy to just replace the model name string to change the
+model used.
