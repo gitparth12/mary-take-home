@@ -1,3 +1,106 @@
+# Synthetic Data Generation for LLM Training
+
+## 🧠 Approach
+
+In order to more organically make my thinking available, I decided to maintain
+a development log throughout the process. I have used that as a basis for this
+document. The log is provided as the last segment in this document as well, if
+it's needed.
+
+The goal was to generate synthetic training data to teach an LLM to identify
+which tools to invoke (e.g., full-text or vector search) when responding to
+legal queries. The model is not responsible for answering the queries — only
+for selecting the right tools based on query intent.
+
+Given a 400+ page OCR-transcribed legal document, my approach was to:
+
+1. Split the document by page using structured markers (e.g. `=== PAGE N ===`).
+2. Iterate over each page, optionally filtering out pages without meaningful legal content.
+3. Use a Large Language Model (LLM) to generate synthetic queries and corresponding tool-use JSON objects based on the content of each page.
+4. Aggregate results into a `.jsonl` file for use in supervised fine-tuning (SFT).
+
+Two modes of generation were implemented:
+
+- **API-based** using Google Gemini.
+- **Local inference** using the `Mistral-7B-Instruct-v0.3` model from Hugging Face.
+
+_Note: the local approach has not been fully tested due to the large download
+time of the model. I have attempted to include the code and believe there
+should not be major issues running it but decided to try and focus on writing
+up my ideas as a priority._
+
+---
+
+## Key Design Decisions & Assumptions
+
+### Use LLMs instead of Traditional NLP
+
+I initially considered using templates and keyword-based generation with traditional NLP tools, but found that:
+
+- Coverage and diversity were low.
+- Time constraints and unfamiliarity with text parsing at scale made this infeasible.
+
+Instead, I adopted an LLM-centric pipeline — a common technique found in recent
+research — which allowed for semantically rich, diverse examples. The research
+I went through is linked below.
+
+- [Quality Matters: Evaluating Synthetic Data for Tool-Using LLMs](https://arxiv.org/pdf/2409.16341)
+- [ToolAlpaca: Generalized Tool Learning for Language Models with 3000 Simulated Cases](https://arxiv.org/pdf/2306.05301)
+
+I also found a paper that introduced a knowledge graph-based data generation
+framework, [GraphGen](https://arxiv.org/pdf/2505.20416), that seemed promising on large stores of documents, but decided not to
+try and implement due to time constraints.
+
+---
+
+### Page-wise Chunking
+
+Because the OCR document is large, I structured processing around individual
+pages. Each LLM call is limited to a single page's worth of content, ensuring:
+
+- Reduced prompt size.
+- Better grounding.
+- Easy attribution of queries to document locations.
+
+---
+
+### Chat-style Context Handling
+
+For Gemini, I primed the model once with a detailed system prompt, then
+streamed document pages incrementally through the chat interface. This
+preserved instruction context without resending the full prompt each time.
+
+To replicate this for local inference with Mistral, I:
+
+- Used a chat-style formatting convention (`[INST]`, `<<SYS>>`) in prompts.
+- Simulated chat history manually by combining the system instruction and user input.
+
+---
+
+### Output Structure & Filtering
+
+Each row of generated data includes:
+
+- A realistic legal query.
+- One or more tool invocations (`full_text_search`, `vector_search`).
+- The source page number.
+
+The LLM was explicitly instructed to **generate nothing** if a page lacked useful content. This reduces noise and improves data quality.
+
+---
+
+## Pipeline Diagram
+
+```mermaid
+flowchart TD
+    A[OCR Legal Document] --> B[Split into Pages]
+    B --> C[LLM Selection<br>(Gemini or Mistral)]
+    C --> D[Prompt Formatting<br>+ Chat History]
+    D --> E[Generate JSON rows]
+    E --> F[Filter Empty/Invalid]
+    F --> G[Write to dataset.jsonl]
+```
+
 ## Dev Log
 
 ### Initial Plan
@@ -58,3 +161,11 @@ for this, it should be easy to just replace the model name string to change the
 model used. Huggingface page for mistral's model revealed that there's a
 specific instruction format required. I took help from AI to write a function
 that lets me format chat messages as required.
+
+```
+
+```
+
+```
+
+```
