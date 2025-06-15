@@ -36,3 +36,12 @@ then split the ocr text by pages so that I can generate in batches to retain
 context properly, and finally bring everything together into a pipeline and
 generate data. Some helper functions may be required along the way, and I'll
 try to keep everything fairly extensible.
+
+I tested an arbitrary prompt with gemini and generation is working as expected.
+I also decided to use ai to help me write some regex that would parse a
+response output into a json object. The output is expected to be a list of
+objects, each following the dataset row format provided. Next, I'm planning to
+implement a simple function that splits the ocr document by the page numbers.
+Finally, I'll write a function that reads the ocr document, splits it, and then
+iteratively provides each page to gemini. It will then take all of that output
+and write it to a .jsonl file.
