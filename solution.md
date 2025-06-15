@@ -89,6 +89,40 @@ The LLM was explicitly instructed to **generate nothing** if a page lacked usefu
 
 ---
 
+## How to Run the Script
+
+This project requires **Python 3.12** and uses a `venv` environment. Follow the steps below to set everything up and run the data generation pipeline.
+
+### 1. Clone the repository and set up the environment
+
+```bash
+python3.12 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 2. Add your API key for Google Gemini
+
+Create a `.env` file in the project root with the following contents.
+
+```ini
+GEMINI_API_KEY=your-google-gemini-api-key-here
+```
+
+This is required for the Gemini class to authenticate and call the API.
+
+3. Run the generation pipeline
+
+Once setup is complete, you can run the main script to generate the synthetic dataset:
+
+```bash
+python src/main.py
+```
+
+The final dataset will be saved to `data/dataset.jsonl`.
+
+---
+
 ## Pipeline Diagram
 
 ```mermaid
