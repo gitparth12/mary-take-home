@@ -55,4 +55,6 @@ everything's done. For now, I'll move onto local inference.
 Through a quick google search, I decided to use Mistral 7B v0.3 model to make
 another class similar to the one with Gemini. Since I'll be using huggingface
 for this, it should be easy to just replace the model name string to change the
-model used.
+model used. Huggingface page for mistral's model revealed that there's a
+specific instruction format required. I took help from AI to write a function
+that lets me format chat messages as required.

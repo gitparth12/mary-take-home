@@ -20,3 +20,12 @@ class Mistral:
         self.chat_history = [
             {"role": "system", "content": prompt}
         ]
+
+    def build_chat_prompt(self) -> str:
+        prompt = ""
+        for turn in self.chat_history:
+            if turn["role"] == "system":
+                prompt += f"<s>[INST] <<SYS>>\n{turn['content']}\n<</SYS>>\n"
+            elif turn["role"] == "user":
+                prompt += f"{turn['content']} [/INST] "
+        return prompt.strip()
