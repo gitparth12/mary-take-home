@@ -27,3 +27,12 @@ be careful with how I structure the prompt. For the second, I want to give the
 LLM the option to not generate data if it didn't find it (assuming I give small
 chunks of the corpora), and also ask it to validate the accuracy of what it
 generated post-hoc. The second one might be out of scope if I run out of time.
+
+I decided to make two classes, one for running Gemini through its API and
+another to run inference locally. Before I implement local inference, I'd like
+to run through Gemini to validate feasibility and then extend using local
+inference. The next step in the process is probably to write the actual prompt,
+then split the ocr text by pages so that I can generate in batches to retain
+context properly, and finally bring everything together into a pipeline and
+generate data. Some helper functions may be required along the way, and I'll
+try to keep everything fairly extensible.
