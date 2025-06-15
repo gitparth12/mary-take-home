@@ -44,4 +44,5 @@ objects, each following the dataset row format provided. Next, I'm planning to
 implement a simple function that splits the ocr document by the page numbers.
 Finally, I'll write a function that reads the ocr document, splits it, and then
 iteratively provides each page to gemini. It will then take all of that output
-and write it to a .jsonl file.
+and write it to a .jsonl file. Since we already have the pages, I plan to add
+the page number to each row of the dataset. Might help with SFT.
