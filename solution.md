@@ -128,10 +128,10 @@ The final dataset will be saved to `data/dataset.jsonl`.
 ```mermaid
 flowchart TD
     A[OCR Legal Document] --> B[Split into Pages]
-    B --> C[LLM Selection<br>(Gemini or Mistral)]
-    C --> D[Prompt Formatting<br>+ Chat History]
-    D --> E[Generate JSON rows]
-    E --> F[Filter Empty/Invalid]
+    B --> C[Select LLM eg. Gemini or Mistral]
+    C --> D[Format Prompt]
+    D --> E[Generate JSON Entries]
+    E --> F[Filter and Clean]
     F --> G[Write to dataset.jsonl]
 ```
 
@@ -195,11 +195,3 @@ for this, it should be easy to just replace the model name string to change the
 model used. Huggingface page for mistral's model revealed that there's a
 specific instruction format required. I took help from AI to write a function
 that lets me format chat messages as required.
-
-```
-
-```
-
-```
-
-```
